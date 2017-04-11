@@ -49,6 +49,21 @@ angular.module('ion-alpha-scroll', [])
                     ngModel.$render = function() {
                         scope.items = [];
                         scope.items = ngModel.$viewValue;
+                        
+                        scope.items = scope.items.sort(function (a, b) {
+                            var result = 0;
+                            
+                            if (a[attrs.key].toLowerCase() < b[attrs.key].toLowerCase()) {
+                                result = -1;
+                            }
+                            
+                            if (a[attrs.key].toLowerCase() > b[attrs.key].toLowerCase()) {
+                                result = 1;
+                            }
+                                
+                            return result;
+                        });
+                        
                         var tmp = {};
                         for (i = 0; i < scope.items.length; i++) {
                             var letter = scope.items[i][attrs.key].toUpperCase().charAt(0);
