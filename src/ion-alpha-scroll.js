@@ -13,7 +13,7 @@ angular.module('ion-alpha-scroll', [])
                     '<ion-scroll delegate-handle="alphaScroll">',
                     '<div data-ng-repeat="(letter, items) in sorted_items" class="ion_alpha_list">',
                     '<ion-item class="item item-divider" id="index_{{letter}}">{{letter}}</ion-item>',
-                    '<ion-item ng-repeat="item in items"></ion-item>',
+                    '<ion-item class="item item-avatar" ng-repeat="item in items"></ion-item>',
                     '</div>',
                     '</ion-scroll>',
                     '<ul class="ion_alpha_sidebar">',
