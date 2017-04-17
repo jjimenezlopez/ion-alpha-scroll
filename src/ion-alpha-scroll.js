@@ -10,13 +10,19 @@ angular.module('ion-alpha-scroll', [])
                 var children = tElement.contents();
                 var template = angular.element([
                     '<ion-list class="ion_alpha_list_outer">',
+                    '<div class="item item-input" ng-if="showSearchBar">',
+                    '<input type="text" name="search" ng-change="search(searchValue)" ng-model="searchValue" value="" placeholder="{{\'Search\' | translate}}">',
+                    '</div>',
                     '<ion-scroll delegate-handle="alphaScroll">',
                     '<div data-ng-repeat="(letter, items) in sorted_items" class="ion_alpha_list">',
                     '<ion-item class="item item-divider" id="index_{{letter}}">{{letter}}</ion-item>',
                     '<ion-item class="item item-avatar" ng-repeat="item in items"></ion-item>',
                     '</div>',
+                    '<div class="item" ng-if="!items.length">',
+                    '{{ \'No elements to show\' | translate}}',
+                    '</div>',
                     '</ion-scroll>',
-                    '<ul class="ion_alpha_sidebar">',
+                    '<ul class="ion_alpha_sidebar" ng-if="items.length">',
                     '<li ng-click="alphaScrollGoToList(\'index_{{letter}}\')" ng-repeat="letter in alphabet | orderBy: letter">{{ letter }}</li>',
                     '</ul>',
                     '</ion-list>'
@@ -64,21 +70,12 @@ angular.module('ion-alpha-scroll', [])
                             return result;
                         });
                         
-                        var tmp = {};
-                        for (i = 0; i < scope.items.length; i++) {
-                            var letter = scope.items[i][attrs.key].toUpperCase().charAt(0);
-                            if (tmp[letter] == undefined) {
-                                tmp[letter] = []
-                            }
-                            tmp[letter].push(scope.items[i]);
-                        }
-                        scope.alphabet = iterateAlphabet(tmp);
-                        scope.sorted_items = tmp;
-
-                        scope.alphaScrollGoToList = function(id) {
-                            $location.hash(id);
-                            $ionicScrollDelegate.$getByHandle('alphaScroll').anchorScroll();
-                        }
+                        scope.initialItems = scope.items;
+                        scope.showSearchBar = attrs.showSearchBar === "true";
+                        
+                        prepareList();
+                        
+                        scope.search = search;
 
                         //Create alphabet object
                         function iterateAlphabet(alphabet) {
@@ -97,6 +94,37 @@ angular.module('ion-alpha-scroll', [])
                             return numbers;
                         }
 
+                        function prepareList() {
+                            var tmp = {};
+                            for (i = 0; i < scope.items.length; i++) {
+                                var letter = scope.items[i][attrs.key].toUpperCase().charAt(0);
+                                if (tmp[letter] == undefined) {
+                                    tmp[letter] = []
+                                }
+                                tmp[letter].push(scope.items[i]);
+                            }
+                            scope.alphabet = iterateAlphabet(tmp);
+                            scope.sorted_items = tmp;
+
+                            scope.alphaScrollGoToList = function(id) {
+                                $location.hash(id);
+                                $ionicScrollDelegate.$getByHandle('alphaScroll').anchorScroll();
+                            }
+                        }
+                        
+                        function search(value) {
+                            if (value.length > 0) {
+                                scope.items = scope.initialItems.filter(function (item) {
+                                    var valueLowerCase = value.toLowerCase();
+
+                                    return item.displayName.toLowerCase().indexOf(valueLowerCase) > -1;
+                                });
+                            } else {
+                                scope.items = scope.initialItems;
+                            }
+                            
+                            prepareList();
+                        }
                     };
                 }
             }
