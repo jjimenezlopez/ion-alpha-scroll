@@ -3,6 +3,8 @@ ion-alpha-scroll
 
 > Configurable Ionic directive for alphabetically indexed list with an alpha scroll bar.
 
+This is a fork of the original directive from [aquint](https://github.com/aquint/ion-alpha-scroll)
+
 #Table of contents
 
 - [Demo](#demo)
@@ -19,7 +21,7 @@ ion-alpha-scroll
 
 1. Use bower to install the new module:
 ```bash
-bower install ion-alpha-scroll --save
+bower install https://github.com/jjimenezlopez/ion-alpha-scroll.git --save
 ```
 2. Import the `ion-alpha-scroll` javascript and css file into your HTML file:
 ```html
@@ -38,13 +40,15 @@ angular.module('myApp', [
 
 To use the `ion-alpha-scroll` directive simply add the following snippet to your template:
 ```html
-<ion-alpha-scroll ng-model="model" key="keyName" subheader="true">
+<ion-alpha-scroll ng-model="model" key="keyName" subheader="true" show-search-bar="true">
   Content Goes here...
 </ion-alpha-scroll>
 ```
 where 'ng-model' is the model you would like to sort and 'key' is the name of the key you would like to sort by.
 
 The 'subheader' attribute is optional, to be set if using a subheader in the view to allow proper scroll height.
+
+The 'show-search-bar' attribute is optional, to be set if you want to show a search bar in order to find elements by 'key'.
 
 To display the properties of each item in the model, you can use the 'item' object within the directive:
 ```html
