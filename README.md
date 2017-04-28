@@ -40,7 +40,7 @@ angular.module('myApp', [
 
 To use the `ion-alpha-scroll` directive simply add the following snippet to your template:
 ```html
-<ion-alpha-scroll ng-model="model" key="keyName" subheader="true" show-search-bar="true">
+<ion-alpha-scroll ng-model="model" key="keyName" subheader="true" show-search-bar="true" item-click="Controller.doSomething(item)">
   Content Goes here...
 </ion-alpha-scroll>
 ```
@@ -49,6 +49,8 @@ where 'ng-model' is the model you would like to sort and 'key' is the name of th
 The 'subheader' attribute is optional, to be set if using a subheader in the view to allow proper scroll height.
 
 The 'show-search-bar' attribute is optional, to be set if you want to show a search bar in order to find elements by 'key'.
+
+The 'item-click' is the function that the directive will call when an item is clicked.
 
 To display the properties of each item in the model, you can use the 'item' object within the directive:
 ```html

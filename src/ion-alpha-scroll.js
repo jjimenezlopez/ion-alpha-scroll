@@ -1,7 +1,7 @@
 angular.module('ion-alpha-scroll', [])
 .directive('ionAlphaScroll', [
-    '$ionicScrollDelegate', '$location', '$timeout', '$document',
-    function($ionicScrollDelegate, $location, $timeout, $document) {
+    '$ionicScrollDelegate', '$location', '$timeout', '$document', '$parse',
+    function($ionicScrollDelegate, $location, $timeout, $document, $parse) {
         return {
             require: '?ngModel',
             restrict: 'AE',
@@ -16,7 +16,7 @@ angular.module('ion-alpha-scroll', [])
                     '<ion-scroll delegate-handle="alphaScroll">',
                     '<div data-ng-repeat="(letter, items) in sorted_items" class="ion_alpha_list">',
                     '<ion-item class="item item-divider" id="index_{{letter}}">{{letter}}</ion-item>',
-                    '<ion-item class="item item-avatar" ng-repeat="item in items"></ion-item>',
+                    '<ion-item class="item item-avatar" ng-repeat="item in items" ng-click="itemClick(item)"></ion-item>',
                     '</div>',
                     '<div class="item" ng-if="!items.length">',
                     '{{ \'No elements to show\' | translate}}',
@@ -32,7 +32,7 @@ angular.module('ion-alpha-scroll', [])
                 var subHeaderHeight = tAttrs.subheader === "true" ? 44 : 0;
                 var tabHeight = $document[0].body.querySelector('.tab-nav') ? $document[0].body.querySelector('.tab-nav').offsetHeight : 0;
                 var windowHeight = window.innerHeight;
-
+                var itemClick = $parse(tAttrs.itemClick);
                 var contentHeight = windowHeight - headerHeight - subHeaderHeight - tabHeight;
 
                 angular.element(template.find('ion-item')[1]).append(children);
@@ -72,6 +72,9 @@ angular.module('ion-alpha-scroll', [])
                         
                         scope.initialItems = scope.items;
                         scope.showSearchBar = attrs.showSearchBar === "true";
+                        scope.itemClick = function (item) {
+                            itemClick(scope, {item: item});
+                        };
                         
                         prepareList();
                         
