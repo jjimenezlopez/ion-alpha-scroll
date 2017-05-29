@@ -10,10 +10,10 @@ angular.module('ion-alpha-scroll', [])
                 var children = tElement.contents();
                 var template = angular.element([
                     '<ion-list class="ion_alpha_list_outer">',
+                    '<ion-scroll delegate-handle="alphaScroll">',
                     '<div class="item item-input" ng-if="showSearchBar">',
                     '<input type="text" name="search" ng-change="search(searchValue)" ng-model="searchValue" value="" placeholder="{{\'Search\' | translate}}">',
                     '</div>',
-                    '<ion-scroll delegate-handle="alphaScroll">',
                     '<div data-ng-repeat="(letter, items) in sorted_items" class="ion_alpha_list">',
                     '<ion-item class="item item-divider" id="index_{{letter}}">{{letter}}</ion-item>',
                     '<ion-item class="item item-avatar" ng-repeat="item in items" ng-click="itemClick(item)"></ion-item>',
